@@ -1,27 +1,20 @@
-import styled, { css } from 'styled-components'
-import media, { DefaultBreakpoints } from 'styled-media-query'
+import { Story, Meta } from '@storybook/react/types-6-0'
+import MediaMatch from '.'
 
-type breakpoint = keyof DefaultBreakpoints
+export default {
+  title: 'MediaMatch',
+  component: MediaMatch
+} as Meta
 
-export type MediaMatchProps = {
-  lessThan?: breakpoint
-  greaterThan?: breakpoint
+export const Desktop: Story = () => (
+  <MediaMatch greaterThan="medium">Only on Desktop</MediaMatch>
+)
+export const Mobile: Story = () => (
+  <MediaMatch lessThan="medium">Only on Mobile</MediaMatch>
+)
+
+Mobile.parameters = {
+  viewport: {
+    defaultViewport: 'mobile1'
+  }
 }
-
-const mediaMatchModifiers = {
-  lessThan: (size: breakpoint) => css`
-    ${media.lessThan(size)` display: block `}
-  `,
-
-  greaterThan: (size: breakpoint) => css`
-    ${media.greaterThan(size)` display: block `}
-  `
-}
-
-export default styled.div<MediaMatchProps>`
-  ${({ lessThan, greaterThan }) => css`
-    display: none;
-    ${!!lessThan && mediaMatchModifiers.lessThan(lessThan)}
-    ${!!greaterThan && mediaMatchModifiers.greaterThan(greaterThan)}
-  `}
-`
